@@ -19,6 +19,9 @@
 5. 標準作業流程 (Standard Operating Procedures)
 
 
+
+
+
 ### 🎯 專案概述 (Overview)
 
 本專案旨在為規模 50 至 100 台之校園電腦教室建立一套兼顧「資安防護、自動化稽核、分級教學與高效維運」的綜合管理系統。透過結合 Windows 系統原生機制、開源軟體（Pi-hole、FOG、Veyon）與自動化腳本，在零商業軟體採購預算的前提下，實現全方位的教室智慧化管理。
@@ -80,4 +83,34 @@ FOG 批次派發：將調校完畢的普通機上傳至開源 FOG 伺服器 作�
 畫面預覽：老師端透過 Veyon Master 即時檢視全班 50-100 台電腦縮圖。
 
 課堂秩序掌控：提供「螢幕廣播」、「一鍵鎖屏」及「遠端協助」功能，有效維持上課秩序並即時解決學生操作問題。
+
+
+
+```mermaid
+graph TD
+    %% 系統角色與外部裝置
+    Student((學生)) -->|學號登入| PC[電腦教室主機]
+    Admin((管理者)) -->|管理/審核| Server[伺服器與工具端]
+
+    %% 核心四大模組與流程
+    subgraph 1. 登入稽核與守則
+        PC -->|登入/登出觸發| Script[PowerShell 腳本]
+        Script -->|寫入日誌| Log[(CSV 總表)]
+        PC -->|開機瞬間| PopUp[強制彈窗守則]
+    end
+
+    subgraph 2. 網路安全與過濾
+        PC -->|DNS 請求| PiHole[Pi-hole 網管]
+        PiHole -->|阻斷黑名單| Internet((網際網路))
+    end
+
+    subgraph 3. 教室監控與教學
+        Server -->|Veyon Master| Veyon[即時監控 / 廣播 / 鎖屏]
+        Veyon --> PC
+    end
+
+    subgraph 4. 維運與大量部署
+        Server -->|FOG 伺服器| FOG[PXE 網路開機部署]
+        FOG -.->|一鍵還原/更新| PC
+    end
 
