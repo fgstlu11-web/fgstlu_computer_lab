@@ -84,33 +84,5 @@ FOG 批次派發：將調校完畢的普通機上傳至開源 FOG 伺服器 作�
 
 課堂秩序掌控：提供「螢幕廣播」、「一鍵鎖屏」及「遠端協助」功能，有效維持上課秩序並即時解決學生操作問題。
 
-
-
-```mermaid
-graph TD
-    %% 系統角色與外部裝置
-    Student((學生)) -->|學號登入| PC[電腦教室主機]
-    Admin((管理者)) -->|管理/審核| Server[伺服器與工具端]
-
-    %% 核心四大模組與流程
-    subgraph 1. 登入稽核與守則
-        PC -->|登入/登出觸發| Script[PowerShell 腳本]
-        Script -->|寫入日誌| Log[(CSV 總表)]
-        PC -->|開機瞬間| PopUp[強制彈窗守則]
-    end
-
-    subgraph 2. 網路安全與過濾
-        PC -->|DNS 請求| PiHole[Pi-hole 網管]
-        PiHole -->|阻斷黑名單| Internet((網際網路))
-    end
-
-    subgraph 3. 教室監控與教學
-        Server -->|Veyon Master| Veyon[即時監控 / 廣播 / 鎖屏]
-        Veyon --> PC
-    end
-
-    subgraph 4. 維運與大量部署
-        Server -->|FOG 伺服器| FOG[PXE 網路開機部署]
-        FOG -.->|一鍵還原/更新| PC
-    end
+<img width="1862" height="1788" alt="mermaid-diagram-2026-07-25-093942" src="https://github.com/user-attachments/assets/af0d0962-ac6b-4a13-99bb-7607f9d937b1" />
 
